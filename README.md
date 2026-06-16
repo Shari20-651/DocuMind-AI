@@ -1,41 +1,83 @@
 # DocuMind-AI
 
-AI-powered document intelligence platform built with:
+AI-powered document processing platform built with FastAPI, Supabase, and Google Gemini.
 
-- FastAPI
-- Supabase
-- PostgreSQL
-- pgvector
-- Gemini
-- React
+## Overview
 
-## Features
+DocuMind-AI is a cloud-native document intelligence platform that can:
 
-- Document Upload
-- AI-powered Information Extraction
-- Semantic Search
-- Retrieval-Augmented Generation (RAG)
-- Document Storage
+* Upload documents
+* Store files in Supabase Storage
+* Extract document text
+* Analyze content using Google Gemini
+* Generate structured JSON outputs
+* Store AI analysis results in Supabase Database
 
-## Tech Stack
+The platform is designed to support multiple document types such as resumes, invoices, contracts, reports, and research papers.
 
-Frontend:
-- React
+## Current Features
 
-Backend:
-- FastAPI
-- Python
+### Resume Processing Pipeline
 
-Database:
-- PostgreSQL (Supabase)
-- pgvector
+* DOCX upload support
+* Text extraction
+* AI-powered resume analysis
+* Structured data extraction:
 
-AI:
-- Gemini
+  * Name
+  * Email
+  * Phone
+  * Location
+  * Skills
+  * Education
+  * Experience
+* Storage of AI results in Supabase
 
-Storage:
-- Supabase Storage
+### Backend Stack
+
+* FastAPI
+* Supabase Storage
+* Supabase PostgreSQL
+* Google Gemini
+* Python
+
+## Architecture
+
+User Upload
+↓
+FastAPI API
+↓
+Supabase Storage
+↓
+Text Extraction
+↓
+Gemini Analysis
+↓
+Supabase Database
+
+## Milestones Completed
+
+* [x] Project Setup
+* [x] GitHub Repository Setup
+* [x] FastAPI Backend Structure
+* [x] Supabase Integration
+* [x] File Upload API
+* [x] Text Extraction Engine
+* [x] AI Resume Analysis
+* [x] Database Persistence
+
+## Upcoming Features
+
+* Document Retrieval APIs
+* Resume Search & Filtering
+* Document Classification
+* Invoice Analysis
+* Contract Analysis
+* Frontend Dashboard
+* Semantic Search
 
 ## Status
 
-🚧 Under Active Development
+MVP Progress: ~70%
+
+
