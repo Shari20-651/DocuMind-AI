@@ -1,3 +1,5 @@
+from app.services.embedding_service import generate_embedding
+from app.services.supabase_service import update_embedding
 from fastapi import APIRouter, UploadFile, File
 import tempfile
 import os
@@ -44,10 +46,21 @@ async def upload_file(file: UploadFile = File(...)):
         extracted_text
     )
 
-    save_document_data(
+    saved_doc = save_document_data(
         file.filename,
         extracted_text,
         ai_output
+    )
+
+    embedding = generate_embedding(
+        extracted_text[:8000]
+    )
+
+    document_id = saved_doc.data[0]["id"]
+
+    update_embedding(
+        document_id,
+        embedding
     )
 
     os.remove(temp_path)

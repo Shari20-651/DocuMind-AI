@@ -13,9 +13,15 @@ supabase = create_client(
 )
 
 def upload_to_storage(file_name, file_content):
-    response = supabase.storage.from_("document-uploads").upload(
-        file_name,
-        file_content
+    response = (
+        supabase
+        .storage
+        .from_("document-uploads")
+        .upload(
+            file_name,
+            file_content,
+            {"upsert": "true"}
+        )
     )
 
     return response
@@ -34,6 +40,24 @@ def save_document_data(
                 "ai_output": ai_output
             }
         )
+        .execute()
+    )
+
+    return response
+
+def update_embedding(
+    document_id,
+    embedding
+):
+    response = (
+        supabase
+        .table("documents")
+        .update(
+            {
+                "embedding": embedding
+            }
+        )
+        .eq("id", document_id)
         .execute()
     )
 
