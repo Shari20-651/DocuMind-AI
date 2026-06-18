@@ -29,7 +29,8 @@ def upload_to_storage(file_name, file_content):
 def save_document_data(
     filename,
     extracted_text,
-    ai_output
+    ai_output,
+    document_type
 ):
     response = (
         supabase.table("documents")
@@ -37,7 +38,8 @@ def save_document_data(
             {
                 "filename": filename,
                 "extracted_text": extracted_text,
-                "ai_output": ai_output
+                "ai_output": ai_output,
+                "document_type": document_type
             }
         )
         .execute()
@@ -62,3 +64,19 @@ def update_embedding(
     )
 
     return response
+
+def semantic_search(
+    query_embedding,
+    match_count=5
+):
+    response = (
+        supabase.rpc(
+            "match_documents",
+            {
+                "query_embedding": query_embedding,
+                "match_count": match_count
+            }
+        ).execute()
+    )
+
+    return response.data

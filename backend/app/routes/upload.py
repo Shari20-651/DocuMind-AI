@@ -1,6 +1,15 @@
 from app.services.embedding_service import generate_embedding
 from app.services.supabase_service import update_embedding
 from fastapi import APIRouter, UploadFile, File
+from app.services.classification_service import (
+    classify_document
+)
+from app.services.invoice_service import (
+    analyze_invoice
+)
+from app.services.pdf_extraction_service import (
+    extract_text_from_pdf
+)
 import tempfile
 import os
 
@@ -32,24 +41,53 @@ async def upload_file(file: UploadFile = File(...)):
 
     with tempfile.NamedTemporaryFile(
         delete=False,
-        suffix=".docx"
+        suffix=os.path.splitext(
+    file.filename
+)[1]
     ) as temp_file:
 
         temp_file.write(content)
         temp_path = temp_file.name
 
-    extracted_text = extract_text_from_docx(
+    if file.filename.endswith(".pdf"):
+
+       extracted_text = extract_text_from_pdf(
         temp_path
     )
 
-    ai_output = analyze_resume(
+    else:
+
+        extracted_text = extract_text_from_docx(
+        temp_path
+    )
+
+    document_type = classify_document(
         extracted_text
     )
+
+    if document_type == "resume":
+
+        ai_output = analyze_resume(
+            extracted_text
+        )
+
+    elif document_type == "invoice":
+
+        ai_output = analyze_invoice(
+            extracted_text
+        )
+
+    else:
+
+        ai_output = {
+            "message": "No extractor available"
+        }
 
     saved_doc = save_document_data(
         file.filename,
         extracted_text,
-        ai_output
+        ai_output,
+        document_type
     )
 
     embedding = generate_embedding(
@@ -66,7 +104,8 @@ async def upload_file(file: UploadFile = File(...)):
     os.remove(temp_path)
 
     return {
-        "message": "Resume processed successfully",
+        "message": "Document processed successfully",
         "filename": file.filename,
+        "document_type": document_type,
         "ai_output": ai_output
     }
