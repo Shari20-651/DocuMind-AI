@@ -1,83 +1,37 @@
 # DocuMind-AI
 
-AI-powered document processing platform built with FastAPI, Supabase, and Google Gemini.
+Cloud-Native AI Document Processing Platform built using FastAPI, Google Gemini AI, Supabase, pgvector, Docker, and Railway.
 
-## Overview
+## Features
 
-DocuMind-AI is a cloud-native document intelligence platform that can:
+- Resume Parsing
+- Invoice Extraction
+- Semantic Search
+- AI-Powered Job Matching
+- Recruiter Dashboard
+- Platform Analytics
+- Vector Search
+- Cloud Deployment
 
-* Upload documents
-* Store files in Supabase Storage
-* Extract document text
-* Analyze content using Google Gemini
-* Generate structured JSON outputs
-* Store AI analysis results in Supabase Database
+## Tech Stack
 
-The platform is designed to support multiple document types such as resumes, invoices, contracts, reports, and research papers.
+- Python
+- FastAPI
+- Google Gemini
+- Supabase
+- PostgreSQL
+- pgvector
+- Docker
+- Railway
 
-## Current Features
+## Live API
 
-### Resume Processing Pipeline
+https://YOUR-RAILWAY-URL
 
-* DOCX upload support
-* Text extraction
-* AI-powered resume analysis
-* Structured data extraction:
+## API Docs
 
-  * Name
-  * Email
-  * Phone
-  * Location
-  * Skills
-  * Education
-  * Experience
-* Storage of AI results in Supabase
-
-### Backend Stack
-
-* FastAPI
-* Supabase Storage
-* Supabase PostgreSQL
-* Google Gemini
-* Python
+https://YOUR-RAILWAY-URL/docs
 
 ## Architecture
 
-User Upload
-↓
-FastAPI API
-↓
-Supabase Storage
-↓
-Text Extraction
-↓
-Gemini Analysis
-↓
-Supabase Database
-
-## Milestones Completed
-
-* [x] Project Setup
-* [x] GitHub Repository Setup
-* [x] FastAPI Backend Structure
-* [x] Supabase Integration
-* [x] File Upload API
-* [x] Text Extraction Engine
-* [x] AI Resume Analysis
-* [x] Database Persistence
-
-## Upcoming Features
-
-* Document Retrieval APIs
-* Resume Search & Filtering
-* Document Classification
-* Invoice Analysis
-* Contract Analysis
-* Frontend Dashboard
-* Semantic Search
-
-## Status
-
-MVP Progress: ~70%
-
-
+See docs/ARCHITECTURE.md

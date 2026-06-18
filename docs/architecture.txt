@@ -1,0 +1,25 @@
+                    +------------------+
+                    |      User        |
+                    +------------------+
+                              |
+                              V
+                    +------------------+
+                    | Railway Hosting  |
+                    | FastAPI Backend  |
+                    +------------------+
+                              |
+            +-----------------+-----------------+
+            |                                   |
+            V                                   V
+ +------------------+              +------------------+
+ |   Gemini AI      |              |    Supabase      |
+ | Resume Analysis  |              | PostgreSQL       |
+ | Invoice Analysis |              | pgvector         |
+ +------------------+              +------------------+
+                                             |
+                                             V
+                                  +------------------+
+                                  | Semantic Search  |
+                                  | Job Matching     |
+                                  | Analytics        |
+                                  +------------------+
