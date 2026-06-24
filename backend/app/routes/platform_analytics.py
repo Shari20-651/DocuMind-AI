@@ -40,42 +40,36 @@ def platform_analytics():
 
         if document_type == "resume":
 
-           resume_count += 1
+            resume_count += 1
 
-    skill_data = ai_output.get(
-        "skills",
-        {}
-    )
-
-    if isinstance(skill_data, dict):
-
-        programming_skills = (
-            skill_data.get(
-                "Programming Languages",
+            skill_data = ai_output.get(
+                "skills",
                 []
             )
-        )
 
-        skills.extend(
-            programming_skills
-        )
+            if isinstance(skill_data, list):
 
-    elif isinstance(skill_data, list):
+                skills.extend(skill_data)
 
-        skills.extend(
-            skill_data
-        )
+            elif isinstance(skill_data, dict):
 
-    elif document_type == "invoice":
+                skills.extend(
+                    skill_data.get(
+                        "Programming Languages",
+                        []
+                    )
+                )
 
-        invoice_count += 1
+        elif document_type == "invoice":
 
-        amount = ai_output.get(
+            invoice_count += 1
+
+            amount = ai_output.get(
                 "amount",
                 ""
             )
 
-        try:
+            try:
 
                 amount = (
                     str(amount)
@@ -88,12 +82,16 @@ def platform_analytics():
                     amount
                 )
 
-        except:
+            except:
                 pass
 
-    top_skills = sorted(
-        set(skills)
-    )[:5]
+    from collections import Counter
+
+    top_skills = [
+        skill
+        for skill, count in
+        Counter(skills).most_common(5)
+    ]
 
     return {
         "total_documents": total_documents,

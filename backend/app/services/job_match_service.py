@@ -8,8 +8,10 @@ def compare_skills(
     missing = []
 
     for skill in resume_skills:
-        if skill.lower() in jd:
-            matched.append(skill)
+        skill_name = skill.split("(")[0].strip()
+
+        if skill_name.lower() in jd:
+            matched.append(skill_name)
 
     common_skills = [
         "Python",

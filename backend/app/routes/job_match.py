@@ -6,9 +6,10 @@ from app.services.job_match_service import compare_skills
 
 router = APIRouter()
 
-
 @router.post("/job-match")
 def job_match(job_description: str):
+
+    print("JOB MATCH ROUTE HIT")
 
     embedding = generate_embedding(
         job_description
@@ -19,18 +20,24 @@ def job_match(job_description: str):
         match_count=10
     )
 
-    top_resume = results[0]
+    if not results:
+        return {
+            "message": "No matching resumes found"
+        }
 
-    resume_skills = (
-        top_resume["ai_output"]
-        ["skills"]
-        ["Programming Languages"]
-    )
+    top_resume = results[0]
+    resume_skills = top_resume["ai_output"].get("skills", [])
+
+    print("JD:", job_description)
+    print("Resume Skills:", resume_skills)
 
     matched, missing = compare_skills(
         job_description,
         resume_skills
     )
+
+    print("Matched:", matched)
+    print("Missing:", missing)
 
     score = round(
         top_resume["similarity"] * 100

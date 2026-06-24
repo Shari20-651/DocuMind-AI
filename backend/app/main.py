@@ -15,6 +15,7 @@ from app.routes.recruiter_dashboard import (
 from app.routes.platform_analytics import (
     router as platform_analytics_router
 )
+from app.routes.resume_ranking import router as ranking_router
 
 app = FastAPI(
     title="DocuMind-AI",
@@ -44,6 +45,7 @@ app.include_router(semantic_search_router)
 app.include_router(job_match_router)
 app.include_router(recruiter_dashboard_router)
 app.include_router(platform_analytics_router)
+app.include_router(ranking_router)
 
 @app.get("/")
 def root():
