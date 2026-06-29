@@ -11,27 +11,21 @@ export default function DocumentDetails() {
   useEffect(() => {
 
     const fetchDocument = async () => {
+  try {
+    const response = await api.get(`/documents/${id}`);
 
-      try {
+    console.log("FULL AXIOS RESPONSE");
+    console.log(response);
 
-        const response = await api.get(
-          `/documents/${id}`
-        );
+    console.log("RESPONSE.DATA");
+    console.log(response.data);
 
-        setDocument(response.data[0]);
+    setDocument(response.data);
 
-        console.log("API RESPONSE");
-console.log(response.data);
-
-console.log("FIRST DOCUMENT");
-console.log(response.data[0]);
-
-      } catch (error) {
-
-        console.error(error);
-
-      }
-    };
+  } catch (error) {
+    console.error(error);
+  }
+};
 
     fetchDocument();
 
@@ -57,104 +51,97 @@ console.log(document?.ai_output);
     <div className="p-8 text-white">
 
       <h1 className="text-3xl font-bold mb-6">
-        Candidate Profile
+        Document Details
       </h1>
 
       <div className="bg-slate-800 p-6 rounded-xl">
 
-        <p><strong>Name:</strong> {ai?.name}</p>
-        <p><strong>Email:</strong> {ai?.email}</p>
-        <p><strong>Phone:</strong> {ai?.phone}</p>
-        <p><strong>Location:</strong> {ai?.location}</p>
+        <p>
+          <strong>Filename:</strong> {document.filename}
+        </p>
+
+        <p>
+          <strong>Document Type:</strong> {document.document_type || "Unknown"}
+        </p>
+
+        <p>
+          <strong>Indexed:</strong> ✅ Yes
+        </p>
 
       </div>
 
-      <div className="bg-slate-800 p-6 rounded-xl mt-6">
+{/* PASTE THE NEW DYNAMIC METADATA SECTION HERE */}
 
-  <h2 className="text-xl font-bold mb-4">
-    Skills
+<div className="bg-slate-800 p-6 rounded-xl mt-6">
+
+  <h2 className="text-2xl font-bold mb-6">
+    AI Extracted Metadata
   </h2>
 
-  {Array.isArray(ai?.skills) ? (
+  {Object.entries(ai || {})
+    .filter(
+      ([key]) =>
+        !["name", "email", "phone", "location"].includes(key)
+    )
+    .map(([key, value]) => (
 
-    <div className="flex flex-wrap gap-2">
+      <div
+        key={key}
+        className="mb-6 border-b border-slate-700 pb-4"
+      >
 
-      {ai.skills.map((skill, index) => (
-        <span
-          key={index}
-          className="bg-blue-600 px-3 py-1 rounded-lg"
-        >
-          {skill}
-        </span>
-      ))}
+        <h3 className="text-blue-400 font-semibold capitalize mb-3">
+          {key.replaceAll("_", " ")}
+        </h3>
 
-    </div>
-
-  ) : (
-
-    Object.entries(ai?.skills || {}).map(
-      ([category, skills]) => (
-
-        <div key={category} className="mb-4">
-
-          <h3 className="font-semibold text-blue-400 mb-2">
-            {category.replaceAll("_", " ")}
-          </h3>
+        {Array.isArray(value) ? (
 
           <div className="flex flex-wrap gap-2">
 
-            {skills.map((skill, index) => (
+            {value.map((item, index) => (
+
               <span
                 key={index}
                 className="bg-blue-600 px-3 py-1 rounded-lg"
               >
-                {skill}
+                {typeof item === "object"
+                  ? JSON.stringify(item)
+                  : item}
               </span>
+
             ))}
 
           </div>
 
-        </div>
+        ) : typeof value === "object" ? (
 
-      )
-    )
+          <pre className="bg-slate-900 rounded-lg p-4 overflow-auto text-sm">
+            {JSON.stringify(value, null, 2)}
+          </pre>
 
-  )}
+        ) : (
+
+          <p className="text-slate-300">
+            {value?.toString()}
+          </p>
+
+        )}
+
+      </div>
+
+    ))}
 
 </div>
 
-  <div className="bg-slate-800 p-6 rounded-xl mt-6">
+<div className="bg-slate-800 p-6 rounded-xl mt-6">
 
   <h2 className="text-xl font-bold mb-4">
-    Education
+    Extracted Text
   </h2>
 
-  {(ai?.education || []).map((edu, index) => (
-
-    <div
-      key={index}
-      className="mb-6 border-b border-slate-700 pb-4"
-    >
-
-      <h3 className="font-bold text-lg">
-        {edu.degree}
-      </h3>
-
-      <p className="text-slate-300">
-        {edu.institution}
-      </p>
-
-      <p>
-        {edu.years}
-      </p>
-
-      <p>
-        {edu.details}
-      </p>
-
-    </div>
-
-  ))}
+  <pre className="whitespace-pre-wrap text-slate-300">
+    {document.extracted_text}
+  </pre>
 
 </div>
 

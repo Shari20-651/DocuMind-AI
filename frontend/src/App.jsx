@@ -6,35 +6,37 @@ import Dashboard from "./pages/Dashboard";
 import Upload from "./pages/Upload";
 import Documents from "./pages/Documents";
 import Search from "./pages/Search";
-import JobMatch from "./pages/JobMatch";
 import Analytics from "./pages/Analytics";
 import DocumentDetails from "./pages/DocumentDetails";
-import ResumeRanking from "./pages/ResumeRanking";
+import { useState } from "react";
 
 function App() {
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+
   return (
     <BrowserRouter>
 
-      <div className="flex">
+      <div className="flex bg-slate-950 min-h-screen">
 
-        <Sidebar />
+  <Sidebar
+    sidebarOpen={sidebarOpen}
+    setSidebarOpen={setSidebarOpen}
+  />
 
-        <div className="flex-1 bg-slate-950 min-h-screen">
+  <main className="flex-1 overflow-auto">
 
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/upload" element={<Upload />} />
-            <Route path="/documents" element={<Documents />} />
-            <Route path="/search" element={<Search />} />
-            <Route path="/job-match" element={<JobMatch />} />
-            <Route path="/analytics" element={<Analytics />} />
-            <Route path="/documents/:id" element={<DocumentDetails />} />
-            <Route path="/resume-ranking" element={<ResumeRanking />} />
-          </Routes>
+    <Routes>
+      <Route path="/" element={<Dashboard />} />
+      <Route path="/upload" element={<Upload />} />
+      <Route path="/documents" element={<Documents />} />
+      <Route path="/search" element={<Search />} />
+      <Route path="/analytics" element={<Analytics />} />
+      <Route path="/documents/:id" element={<DocumentDetails />} />
+    </Routes>
 
-        </div>
+  </main>
 
-      </div>
+</div>
 
     </BrowserRouter>
   );

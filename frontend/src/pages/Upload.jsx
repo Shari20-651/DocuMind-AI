@@ -7,6 +7,17 @@ export default function Upload() {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [stage, setStage] = useState("");
+  const stages = [
+  "Uploading",
+  "AI Extracting",
+  "Generating Embeddings",
+  "Indexed",
+  "Completed"
+];
+
   const handleUpload = async () => {
 
     if (!file) return;
@@ -17,19 +28,55 @@ export default function Upload() {
 
     try {
 
-      setLoading(true);
+  setLoading(true);
+
+  setUploading(true);
+  setProgress(5);
+  setStage("Uploading");
 
       const response = await api.post(
         "/upload",
         formData,
         {
-          headers: {
-            "Content-Type": "multipart/form-data"
-          }
-        }
+  headers: {
+    "Content-Type": "multipart/form-data"
+  },
+
+  onUploadProgress: (event) => {
+
+    const percent = Math.round(
+      (event.loaded * 100) / event.total
+    );
+
+    setProgress(Math.min(percent, 55));
+
+  }
+
+}
       );
 
-      setResult(response.data);
+      setStage("AI Extracting");
+setProgress(65);
+
+await new Promise(resolve => setTimeout(resolve, 500));
+
+setStage("Generating Embeddings");
+setProgress(80);
+
+await new Promise(resolve => setTimeout(resolve, 500));
+
+setStage("Indexed");
+setProgress(95);
+
+await new Promise(resolve => setTimeout(resolve, 500));
+
+setStage("Completed");
+setProgress(100);
+
+setResult(response.data);
+
+setStage("Completed");
+setProgress(100);
 
     } catch (error) {
 
@@ -37,9 +84,17 @@ export default function Upload() {
 
     } finally {
 
-      setLoading(false);
+  setLoading(false);
 
-    }
+  setTimeout(() => {
+
+    setUploading(false);
+    setProgress(0);
+    setStage("");
+
+  }, 800);
+
+}
   };
 
   return (
@@ -66,6 +121,75 @@ export default function Upload() {
           {loading ? "Uploading..." : "Upload"}
         </button>
 
+        {uploading && (
+
+<div className="mt-6 bg-slate-900 rounded-xl p-6 border border-slate-700">
+
+  <div className="flex justify-between mb-3">
+
+    <span className="font-semibold">
+      {file?.name}
+    </span>
+
+    <span>
+      {progress}%
+    </span>
+
+  </div>
+
+  <div className="w-full bg-slate-700 rounded-full h-3 mb-6">
+
+    <div
+      className="bg-gradient-to-r from-blue-500 to-purple-600 h-3 rounded-full transition-all duration-500"
+      style={{
+        width: `${progress}%`
+      }}
+    />
+
+  </div>
+
+  <h3 className="font-semibold mb-4">
+    Current Stage
+  </h3>
+
+  <div className="space-y-3">
+
+    {stages.map((item) => (
+
+      <div
+        key={item}
+        className="flex items-center gap-3"
+      >
+
+        <div
+          className={`w-3 h-3 rounded-full ${
+            stage === item
+              ? "bg-blue-500 animate-pulse"
+              : progress === 100
+              ? "bg-green-500"
+              : "bg-slate-600"
+          }`}
+        />
+
+        <span
+          className={
+            stage === item
+              ? "text-white font-semibold"
+              : "text-slate-400"
+          }
+        >
+          {item}
+        </span>
+
+      </div>
+
+    ))}
+
+  </div>
+
+</div>
+
+)}
       </div>
 
       {result && (

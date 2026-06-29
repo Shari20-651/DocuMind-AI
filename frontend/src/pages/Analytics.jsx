@@ -11,11 +11,10 @@ import {
 export default function Analytics() {
 
   const [stats, setStats] = useState({
-    total_documents: 0,
-    resume_count: 0,
-    invoice_count: 0,
-    top_skills: []
-  });
+  total_documents: 0,
+  resume_count: 0,
+  invoice_count: 0
+});
 
   useEffect(() => {
 
@@ -129,38 +128,57 @@ export default function Analytics() {
 
         <div className="bg-slate-800 p-6 rounded-xl">
 
-          <h2 className="text-xl font-bold mb-4">
-            Top Skills
-          </h2>
+  <h2 className="text-xl font-bold mb-6">
+    Platform Insights
+  </h2>
 
-          <div className="space-y-3">
+  <div className="space-y-4">
 
-            {stats.top_skills?.length > 0 ? (
+    <div className="bg-slate-700 p-4 rounded-lg">
+      <p className="text-gray-400 text-sm">
+        Total Indexed Documents
+      </p>
 
-              stats.top_skills.map(
-                (skill, index) => (
+      <p className="text-2xl font-bold">
+        {stats.total_documents}
+      </p>
+    </div>
 
-                  <div
-                    key={index}
-                    className="bg-slate-700 p-3 rounded-lg"
-                  >
-                    {skill}
-                  </div>
+    <div className="bg-slate-700 p-4 rounded-lg">
+      <p className="text-gray-400 text-sm">
+        Most Common Type
+      </p>
 
-                )
-              )
+      <p className="text-2xl font-bold">
+        {stats.resume_count >= stats.invoice_count
+          ? "Resume"
+          : "Invoice"}
+      </p>
+    </div>
 
-            ) : (
+    <div className="bg-slate-700 p-4 rounded-lg">
+      <p className="text-gray-400 text-sm">
+        AI Search Ready
+      </p>
 
-              <p className="text-gray-400">
-                No skill data available
-              </p>
+      <p className="text-2xl font-bold text-green-400">
+        Yes
+      </p>
+    </div>
 
-            )}
+    <div className="bg-slate-700 p-4 rounded-lg">
+      <p className="text-gray-400 text-sm">
+        Vector Indexed Documents
+      </p>
 
-          </div>
+      <p className="text-2xl font-bold">
+        {stats.total_documents}
+      </p>
+    </div>
 
-        </div>
+  </div>
+
+</div>
 
       </div>
 
