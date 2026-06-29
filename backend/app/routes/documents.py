@@ -12,6 +12,7 @@ def get_documents():
         supabase
         .table("documents")
         .select("*")
+        .order("created_at", desc=True)
         .execute()
     )
 
@@ -26,10 +27,12 @@ def get_document(document_id: str):
         .table("documents")
         .select("*")
         .eq("id", document_id)
+        .single()
         .execute()
     )
 
     return response.data
+
 @router.get("/search")
 def search_documents(filename: str = Query(...)):
 
@@ -46,16 +49,16 @@ def search_documents(filename: str = Query(...)):
 @router.get("/search/skill")
 def search_by_skill(skill: str):
 
-    response = (
-        supabase
-        .table("documents")
-        .select("*")
-        .execute()
-    )
+    documents = (
+    supabase.table("documents")
+    .select("*")
+    .order("created_at", desc=True)
+    .execute()
+)
 
     matching_documents = []
 
-    for doc in response.data:
+    for doc in documents.data:
 
         ai_output = doc.get("ai_output")
 

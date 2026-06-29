@@ -14,8 +14,9 @@ router = APIRouter()
 def search(query: str):
 
     query_embedding = generate_embedding(
-        query
-    )
+    query,
+    task_type="retrieval_query"
+)
 
     results = semantic_search(
         query_embedding

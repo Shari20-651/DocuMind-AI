@@ -1,6 +1,6 @@
 from app.services.embedding_service import generate_embedding
 from app.services.supabase_service import update_embedding
-from fastapi import APIRouter, UploadFile, File
+from fastapi import APIRouter, UploadFile, File, BackgroundTasks
 from app.services.classification_service import (
     classify_document
 )
@@ -26,11 +26,19 @@ from app.services.gemini_service import (
     analyze_resume
 )
 
+from app.services.background_processor import (
+    process_document,
+    update_processing_status
+)
+
 router = APIRouter()
 
 
 @router.post("/upload")
-async def upload_file(file: UploadFile = File(...)):
+async def upload_file(
+    background_tasks: BackgroundTasks,
+    file: UploadFile = File(...)
+):
 
     content = await file.read()
 
@@ -90,11 +98,16 @@ async def upload_file(file: UploadFile = File(...)):
         document_type
     )
 
+    document_id = saved_doc.data[0]["id"]
+
+    update_processing_status(
+        document_id,
+        "Queued"
+    )
+
     embedding = generate_embedding(
         extracted_text[:8000]
     )
-
-    document_id = saved_doc.data[0]["id"]
 
     update_embedding(
         document_id,
@@ -103,8 +116,16 @@ async def upload_file(file: UploadFile = File(...)):
 
     os.remove(temp_path)
 
+    background_tasks.add_task(
+        process_document,
+        document_id,
+        extracted_text,
+        document_type,
+        ai_output
+    )
+
     return {
-        "message": "Document processed successfully",
+        "message": "Document processing initiated",
         "filename": file.filename,
         "document_type": document_type,
         "ai_output": ai_output

@@ -1,10 +1,14 @@
 from fastapi import APIRouter
-from app.services.supabase_service import supabase
+
+from app.services.supabase_service import (
+    supabase
+)
 
 router = APIRouter()
 
-@router.get("/analytics")
-def analytics():
+
+@router.get("/platform-analytics")
+def platform_analytics():
 
     response = (
         supabase
@@ -17,18 +21,82 @@ def analytics():
 
     total_documents = len(documents)
 
-    resumes = 0
-    invoices = 0
+    resume_count = 0
+    invoice_count = 0
+
+    total_invoice_amount = 0
+
+    skills = []
 
     for doc in documents:
 
-        if doc.get("ai_output"):
-            resumes += 1
-        else:
-            invoices += 1
+        document_type = doc.get(
+            "document_type"
+        )
+
+        ai_output = doc.get(
+            "ai_output"
+        ) or {}
+
+        if document_type == "resume":
+
+            resume_count += 1
+
+            skill_data = ai_output.get(
+                "skills",
+                []
+            )
+
+            if isinstance(skill_data, list):
+
+                skills.extend(skill_data)
+
+            elif isinstance(skill_data, dict):
+
+                skills.extend(
+                    skill_data.get(
+                        "Programming Languages",
+                        []
+                    )
+                )
+
+        elif document_type == "invoice":
+
+            invoice_count += 1
+
+            amount = ai_output.get(
+                "amount",
+                ""
+            )
+
+            try:
+
+                amount = (
+                    str(amount)
+                    .replace("₹", "")
+                    .replace(",", "")
+                    .strip()
+                )
+
+                total_invoice_amount += float(
+                    amount
+                )
+
+            except (ValueError, TypeError):
+               pass
+
+    from collections import Counter
+
+    top_skills = [
+        skill
+        for skill, count in
+        Counter(skills).most_common(5)
+    ]
 
     return {
         "total_documents": total_documents,
-        "resumes": resumes,
-        "invoices": invoices
+        "resume_count": resume_count,
+        "invoice_count": invoice_count,
+        "total_invoice_amount": total_invoice_amount,
+        "top_skills": top_skills
     }

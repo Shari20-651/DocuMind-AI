@@ -43,3 +43,12 @@ def analyze_resume(resume_text):
     ).strip()
 
     return json.loads(clean_text)
+def generate_response(prompt):
+
+    try:
+        response = model.generate_content(prompt)
+        return response.text
+
+    except Exception as e:
+
+        return f"AI service unavailable: {str(e)}"
