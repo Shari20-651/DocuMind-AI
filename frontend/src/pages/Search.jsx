@@ -1,10 +1,8 @@
 import { useState } from "react";
 import {
   Bot,
-  BrainCircuit,
-  Sparkles,
-  Cpu,
-  MessageSquareText
+  FileText,
+  Receipt
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
@@ -116,58 +114,93 @@ export default function Search() {
 
 )}
 
-      <div className="bg-slate-800 rounded-xl overflow-hidden">
+<p className="text-slate-400 mb-5 text-sm uppercase tracking-wide">
+  Search Results • {results.length} documents
+</p>
 
-        <table className="w-full">
+      <div className="space-y-5">
 
-          <thead className="bg-slate-700">
+  {results.map((doc) => (
 
-            <tr>
-              <th className="p-4 text-left">File Name</th>
-              <th className="p-4 text-left">Document Type</th>
-              <th className="p-4 text-left">Status</th>
-              <th className="p-4 text-left">View</th>
-            </tr>
+    <div
+      key={doc.id}
+      className="bg-slate-800 rounded-2xl p-5 border border-slate-700 hover:border-blue-500 hover:shadow-xl transition-all duration-300"
+    >
 
-          </thead>
+      <div className="flex justify-between items-center">
 
-          <tbody>
+        <div className="flex items-center gap-4">
 
-            {results.map((doc) => (
-
-              <tr
-                key={doc.id}
-                className="border-t border-slate-700"
-              >
-                <td className="p-4">
-                  {doc.filename}
-                </td>
-
-                <td className="p-4">
-                  {doc.document_type || "-"}
-                </td>
-
-                <td className="p-4">
-  {doc.processing_status || "-"}
-</td>
-
-<td className="p-4">
-  <button
-  onClick={() => navigate(`/documents/${doc.id}`)}
-  className="bg-blue-600 px-3 py-1 rounded-lg hover:bg-blue-700"
+  <div
+  className={`p-3 rounded-xl ${
+    doc.document_type === "resume"
+      ? "bg-blue-500/10"
+      : "bg-green-500/10"
+  }`}
 >
-  View
-</button>
-</td>
-              </tr>
 
-            ))}
+  {doc.document_type === "resume" ? (
 
-          </tbody>
+    <FileText
+      className="text-blue-400"
+      size={24}
+    />
 
-        </table>
+  ) : (
+
+    <Receipt
+      className="text-green-400"
+      size={24}
+    />
+
+  )}
+
+</div>
+
+  <div>
+
+    <h3 className="text-lg font-semibold text-white">
+      {doc.filename}
+    </h3>
+
+    <div className="flex gap-3 mt-3">
+
+      <span
+        className="bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-sm capitalize"
+      >
+        {doc.document_type}
+      </span>
+
+      <span
+        className={`px-3 py-1 rounded-full text-sm ${
+          doc.processing_status === "Completed"
+            ? "bg-green-500/20 text-green-400"
+            : "bg-yellow-500/20 text-yellow-400"
+        }`}
+      >
+        {doc.processing_status}
+      </span>
+
+    </div>
+
+  </div>
+
+</div>
+
+        <button
+          onClick={() => navigate(`/documents/${doc.id}`)}
+          className="bg-gradient-to-r from-blue-600 to-purple-600 px-5 py-2 rounded-xl hover:scale-105 transition"
+        >
+          View Document
+        </button>
 
       </div>
+
+    </div>
+
+  ))}
+
+</div>
 
     </div>
   );

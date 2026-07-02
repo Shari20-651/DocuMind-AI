@@ -1,5 +1,6 @@
 import { useState } from "react";
 import api from "../services/api";
+import toast from "react-hot-toast";
 
 export default function Upload() {
 
@@ -25,12 +26,17 @@ export default function Upload() {
     const formData = new FormData();
 
     formData.append("file", file);
+    
+    let toastId;
 
     try {
 
   setLoading(true);
 
   setUploading(true);
+
+  toastId = toast.loading("Uploading document...");
+
   setProgress(5);
   setStage("Uploading");
 
@@ -75,12 +81,28 @@ setProgress(100);
 
 setResult(response.data);
 
+toast.success(
+  "Document uploaded successfully!",
+  {
+    id: toastId
+  }
+);
+
 setStage("Completed");
 setProgress(100);
 
-    } catch (error) {
+    } 
+    
+    catch (error) {
 
       console.error(error);
+
+      toast.error(
+        "Failed to upload document.",
+        {
+          id: toastId
+        }
+      );
 
     } finally {
 

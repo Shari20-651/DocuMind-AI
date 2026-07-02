@@ -17,7 +17,7 @@ def ask_ai(question: str):
 
     documents = semantic_search(
         question_embedding,
-        match_count=3
+        match_count=5
     )
 
     context = ""
