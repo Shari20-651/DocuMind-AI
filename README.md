@@ -1,11 +1,11 @@
-# 🚀 DocuMind-AI
+# DocuMind-AI
 ### Cloud-Native AI Document Processing Platform
 
 > Process, search and analyze enterprise documents using AI-powered extraction, semantic search, OCR and vector indexing.
 
 ---
 
-## 🌐 Live Demo
+## Live Demo
 
 **Frontend:**  
 https://docu-mind-ai-two-ashy.vercel.app
@@ -18,7 +18,7 @@ https://documind-ai-backend-gbry.onrender.com/docs
 
 ---
 
-## ✨ Features
+## Features
 
 - 📄 Resume Parsing
 - 🧾 Invoice Information Extraction
@@ -97,31 +97,33 @@ https://documind-ai-backend-gbry.onrender.com/docs
 
 ## Dashboard
 
-(Add Screenshot)
+![Dashboard](assets/dashboard.png)
 
 ---
 
 ## Upload Page
 
-(Add Screenshot)
+![Upload](assets/upload.png)
 
 ---
 
 ## Analytics
 
-(Add Screenshot)
+![Analytics](assets/analytics1.png)
+![Analytics Charts](assets/analytics2.png)
 
 ---
 
 ## AI Search
 
-(Add Screenshot)
+![AI Search](assets/search.png)
 
 ---
 
 ## Document Details
 
-(Add Screenshot)
+![Resume Details](assets/documentdetails1.png)
+![Invoice Details](assets/documentdetails2.png)
 
 ---
 
@@ -260,7 +262,7 @@ Analytics Dashboard
 
 # Author
 
-**Sreehari K P**
+**SREEHARI K P**
 
 GitHub
 
@@ -268,7 +270,7 @@ https://github.com/Shari20-651
 
 LinkedIn
 
-(Add LinkedIn)
+www.linkedin.com/in/sreehari-k-p-1b032928a
 
 ---
 
