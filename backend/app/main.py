@@ -17,9 +17,10 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:5173",
-        "https://documind-ai-production-a6d5.up.railway.app"
-    ],
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "https://docu-mind-ai-two-ashy.vercel.app",
+],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
