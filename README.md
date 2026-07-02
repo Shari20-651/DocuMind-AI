@@ -7,13 +7,14 @@
 
 ## 🌐 Live Demo
 
-Frontend
+**Frontend:**  
+https://docu-mind-ai-two-ashy.vercel.app
 
-https://YOUR-VERCEL-URL
+**Backend API:**  
+https://documind-ai-backend-gbry.onrender.com
 
-Backend
-
-https://YOUR-RENDER-URL
+**API Documentation:**  
+https://documind-ai-backend-gbry.onrender.com/docs
 
 ---
 
